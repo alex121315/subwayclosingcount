@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiply Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            text-align: center;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        .calculator {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        .label {
+            flex: 1;
+            text-align: right;
+            margin-right: 10px;
+            color: #666;
+        }
+        .input-field {
+            flex: 1;
+            text-align: center;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            outline: none;
+        }
+        .input-field:focus {
+            border-color: #007bff;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #007bff;
+        }
+        .total-box {
+            margin-top: 20px;
+        }
+        .subtraction-box {
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            border: none;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .subtraction-box button {
+            background-color: #dc3545;
+        }
+        .subtraction-box button:hover {
+            background-color: #c82333;
+        }
+        .new-count-button {
+            margin-top: 20px;
+            margin-right: 10px;
+        }
+        .save-count-button {
+            margin-top: 20px;
+            background-color: #28a745;
+        }
+        .save-count-button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Multiply Calculator</h1>
+        <div class="calculator">
+            <div class="row">
+                <div class="label">20 * </div>
+                <input type="text" id="number1" class="input-field" maxlength="10" placeholder="Enter a number" oninput="calculate('number1', 'result1', 20)">
+                <div> = <span id="result1" class="result"></span></div>
+            </div>
+            <!-- Add other calculator boxes for different calculations here -->
+            <div class="row">
+                <div class="label">10 * </div>
+                <input type="text" id="number2" class="input-field" maxlength="10" placeholder="Enter a number" oninput="calculate('number2', 'result2', 10)">
+                <div> = <span id="result2" class="result"></span></div>
+            </div>
+            <div class="row">
+                <div class="label">5 * </div>
+                <input type="text" id="number3" class="input-field" maxlength="10" placeholder="Enter a number" oninput="calculate('number3', 'result3', 5)">
+                <div> = <span id="result3" class="result"></span></div>
+            </div>
+            <div class="row">
+                <div class="label">2 * </div>
+                <input type="text" id="number4" class="input-field" maxlength="10" placeholder="Enter a number" oninput="calculate('number4', 'result4', 2)">
+                <div> = <span id="result4" class="result"></span></div>
+            </div>
+            <div class="row">
+                <div class="label">1 * </div>
+                <input type="text" id="number5" class="input-field" maxlength="10" placeholder="Enter a number" oninput="calculate('number5', 'result5', 1)">
+                <div> = <span id="result5" class="result"></span></div>
+            </div>
+            <div class="row">
+                <div class="label">0.25 * </div>
+                <input type="text" id="number6" class="input-field" maxlength="10" placeholder="Enter a number" oninput="calculate('number6', 'result6', 0.25)">
+                <div> = <span id="result6" class="result"></span></div>
+            </div>
+            <div class="row">
+                <div class="label">0.10 * </div>
+                <input type="text" id="number7" class="input-field" maxlength="10" placeholder="Enter a number" oninput="calculate('number7', 'result7', 0.10)">
+                <div> = <span id="result7" class="result"></span></div>
+            </div>
+            <div class="row">
+                <div class="label">0.05 * </div>
+                <input type="text" id="number8" class="input-field" maxlength="10" placeholder="Enter a number" oninput="calculate('number8', 'result8', 0.05)">
+                <div> = <span id="result8" class="result"></span></div>
+            </div>
+        </div>
+        <div class="total-box">
+            <div>Total = <span id="totalResult" class="result"></span></div>
+        </div>
+        <div class="subtraction-box">
+            <input type="text" id="subtractAmount1" class="input-field" placeholder="Enter amount of tips">
+            <button onclick="subtractTotal(1)">Subtract</button>
+            <div>Answer = <span id="subtractionResult1" class="result"></span></div>
+        </div>
+      
+        <div class="subtraction-box">
+            <input type="text" id="subtractAmount2" class="input-field" placeholder="loose currency amount">
+            <button onclick="subtractTotal(2)">Subtract</button>
+            <div>Over/short must be = <span id="subtractionResult2" class="result"></span></div>
+        </div>
+      
+        <button class="new-count-button" onclick="resetCalculator()">New Count</button>
+        <button class="save-count-button" onclick="saveCount()">Save Count</button>
+    </div>
+
+    <script>
+        function calculate(inputId, resultId, multiplier) {
+            const number = parseFloat(document.getElementById(inputId).value.trim()) || 0;
+            const result = number * multiplier;
+            document.getElementById(resultId).innerText = result.toFixed(2);
+            
+            // Calculate total
+            let total = 0;
+            for (let i = 1; i <= 8; i++) {
+                const currentResult = parseFloat(document.getElementById('result' + i).innerText) || 0;
+                total += currentResult;
+            }
+            document.getElementById('totalResult').innerText = total.toFixed(2);
+        }
+
+        function subtractTotal(boxNumber) {
+            let total;
+            if (boxNumber === 1) {
+                total = parseFloat(document.getElementById('totalResult').innerText) || 0;
+            } else if (boxNumber === 2) {
+                total = parseFloat(document.getElementById('subtractionResult1').innerText) || 0;
+            }
+            const subtractAmount = parseFloat(document.getElementById('subtractAmount' + boxNumber).value.trim()) || 0;
+            const result = total - subtractAmount;
+            document.getElementById('subtractionResult' + boxNumber).innerText = result.toFixed(2);
+        }
+        
+        function resetCalculator() {
+            // Reset all input fields and result displays
+            for (let i = 1; i <= 8; i++) {
+                document.getElementById('number' + i).value = '';
+                document.getElementById('result' + i).innerText = '';
+            }
+            document.getElementById('totalResult').innerText = '';
+            document.getElementById('subtractAmount1').value = '';
+            document.getElementById('subtractionResult1').innerText = '';
+            document.getElementById('subtractAmount2').value = '';
+            document.getElementById('subtractionResult2').innerText = '';
+        }
+        
+        function saveCount() {
+            // Placeholder function for saving count
+            alert('Count saved!'); // You can replace this with your actual saving mechanism
+        }
+		
+		function saveCount() {
+    const countData = {
+        totalResult: document.getElementById('totalResult').innerText,
+        subtractionResult1: document.getElementById('subtractionResult1').innerText,
+        subtractionResult2: document.getElementById('subtractionResult2').innerText
+        // Add more data fields as needed
+    };
+
+    // Construct the URL of the Google Form with the count data as query parameters
+    const formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSf-6mRuQ4yd-FRZG2OlDIgzWc7iJ-JvnuhyreH_wG5t0T6Ecw/viewform?usp=sf_link';
+    const formData = new FormData();
+    formData.append('1FAIpQLSf', countData.totalResult); // Replace 'entry.xxxxxxxx' with the actual entry ID from your form
+    formData.append('6mRuQ4yd', countData.subtractionResult1); // Replace 'entry.yyyyyyyy' with the actual entry ID from your form
+    formData.append('FRZG2OlDIgzWc7iJ', countData.subtractionResult2); // Replace 'entry.zzzzzzzz' with the actual entry ID from your form
+
+    // Send the count data to the Google Form
+    fetch(formUrl, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (response.ok) {
+            alert('Count data saved successfully!');
+        } else {
+            alert('Failed to save count data.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while saving count data.');
+    });
+}
+
+		
+		
+    </script>
+	
+	
+	<center><footer>
+  <p>Created by : R Patel</p>
+  <p><a href="#">@2024 copyright</a></p>
+</footer></center>
+	
+</body>
+</html>
